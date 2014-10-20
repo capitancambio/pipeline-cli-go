@@ -11,10 +11,11 @@ install:
         - go build github.com/mattn/goveralls
         - go get github.com/mitchellh/gox
         - go build github.com/mitchellh/gox
+        - go get github.com/daisy/pipeline-cli-go
         - go get github.com/capitancambio/deployer
         - go build github.com/capitancambio/deployer
 script:
-        - go test -covermode=atomic -coverprofile=profile.cov ./cli
+        - go test -covermode=atomic -coverprofile=profile.cov github.com/capitancambio/pipeline-cli-go/cli/ 
         - $HOME/gopath/bin/goveralls -coverprofile=profile.cov -service=travis-ci
 
 after_success:
