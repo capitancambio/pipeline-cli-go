@@ -14,9 +14,9 @@ install:
         - go get github.com/daisy/pipeline-cli-go/cli
         - go get github.com/capitancambio/deployer
         - go build github.com/capitancambio/deployer
-script:
-        - go test -covermode=atomic -coverprofile=profile.cov github.com/capitancambio/pipeline-cli-go/cli/ 
-        - $HOME/gopath/bin/goveralls -coverprofile=profile.cov -service=travis-ci
+#script:
+        #- go test -covermode=atomic -coverprofile=profile.cov github.com/capitancambio/pipeline-cli-go/cli/ 
+        #- $HOME/gopath/bin/goveralls -coverprofile=profile.cov -service=travis-ci
 
 after_success:
         - $HOME/gopath/bin/gox -build-toolchain -osarch="linux/amd64 linux/386 darwindows/386 darwindows/amd64 windows/386 windows/amd64" 
