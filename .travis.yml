@@ -1,6 +1,4 @@
 language: go
-go:
-        - tip
 
 install:
         - go get github.com/capitancambio/go-subcommand
@@ -11,8 +9,16 @@ install:
         - go get github.com/modocache/gover
         - go get github.com/mattn/goveralls
         - go build github.com/mattn/goveralls
-
+        - go get github.com/capitancambio/deployer
+        - go build github.com/capitancambio/deployer
 script:
         - go test -covermode=atomic -coverprofile=profile.cov ./cli
-        - ls $HOME/gopath
         - $HOME/gopath/bin/goveralls -coverprofile=profile.cov -service=travis-ci
+
+after_success:
+        - $HOME/gopath/bin/gox -build-toolchain -osarch="linux/amd64 linux/386 darwindows/386 darwindows/amd64 windows/386 windows/amd64" ./dp2
+        - $HOME/gopath/bin/gox -osarch="linux/amd64 linux/386 darwin/386 darwin/amd64 windows/386 windows/amd64"
+        - $HOME/gopath/bin/deployer -token=$TOKEN -files=dp2_darwin_amd64,dp2_darwin_386,dp2_linux_amd64,dp2_linux_386,dp2_windows_amd64.exe,dp2_windows_386.exe -tag=SNAPSHOOT -repo=pipeline-clientlib-go -user=capitancambio
+env:
+  global:
+    secure: EcO4S/IFZwwTIVkk4lIP184t1WjOW+kSbt05K7U/JL07Ut6HMxpQdsbjj+WZcid0KgufRdh7hZGABSVrpWuifCeUZ3juygc7aRLCLN1x3o23/2/D1bDjFG7oaHfShT8Hzwj90ZzgzNrMmQqzJ29KGHzuCpz6JHU6UXwLswRTEb4=
